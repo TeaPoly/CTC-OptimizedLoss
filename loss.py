@@ -6,6 +6,21 @@
 
 import tensorflow as tf
 
+def dense_to_sparse(labels, label_seqences):
+    '''
+    Converts a dense tensor into a sparse tensor.
+    
+    Args:
+        labels: An int Tensor to be converted to a Sparse.
+        label_seqences: An list. It is part of the target label that signifies the end of a sentence.
+    '''
+    mask = tf.sequence_mask(label_seqences, maxlen=tf.shape(labels)[1], dtype=tf.float32)
+    indices = tf.where(tf.not_equal(mask, 0))
+    return tf.SparseTensor(indices,
+            tf.gather_nd(labels, indices),
+            tf.shape(labels, out_type=tf.int64)
+            )
+
 class CTCMWERLoss():
     """ Computes the MWER (minimum WER) Loss.
 
@@ -67,8 +82,8 @@ class CTCMWERLoss():
                             mean_wen for k in range(self.top_paths)]
 
         # Expected number of word errors over the training set.
-        return tf.reduce_mean(
-            [normal_nbest_pdf[k]*normal_nbest_wen[k]
+        return tf.reduce_sum(
+            tf.reduce_mean([normal_nbest_pdf[k]*normal_nbest_wen[k])
                 for k in range(self.top_paths)]
         )
 
@@ -97,7 +112,7 @@ class CTCMWERLoss():
             beam_width=self.beam_width,
             top_paths=self.top_paths)
         nbest_log_pdf = [
-            tf.math.reduce_logsumexp(log_probabilities[:, k], axis=0)
+            log_probabilities[:, k]
             for k in range(self.top_paths)]
 
         return self.loss(nbest_decoded, sparse_labels, nbest_log_pdf)
