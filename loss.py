@@ -23,16 +23,12 @@ def dense_to_sparse(labels, label_seqences):
 
 class CTCMWERLoss():
     """ Computes the MWER (minimum WER) Loss.
-
         Reference:
-
         MINIMUM WORD ERROR RATE TRAINING FOR ATTENTION-BASED
         SEQUENCE-TO-SEQUENCE MODELS
         Rohit Prabhavalkar Tara N. Sainath Yonghui Wu Patrick Nguyen
         Zhifeng Chen Chung-Cheng Chiu Anjuli Kannan
-
         https://arxiv.org/pdf/1712.01818.pdf
-
     """
 
     def __init__(self, beam_width=8, name="CTCMWERLoss"):
@@ -49,7 +45,6 @@ class CTCMWERLoss():
             """
             Computes the Levenshtein distance between sequences to 
             get number of word errors.
-
             Args:
               hypothesis: A `SparseTensor` containing hypothesis sequences.
               truth: A `SparseTensor` containing truth sequences.
@@ -82,10 +77,12 @@ class CTCMWERLoss():
                             mean_wen for k in range(self.top_paths)]
 
         # Expected number of word errors over the training set.
-        return tf.math.reduce_sum(
-            tf.math.reduce_mean([normal_nbest_pdf[k]*normal_nbest_wen[k])
-                for k in range(self.top_paths)]
-        ) # Computes the mean of mwer loss reduce on batch first, then compute the sum of loss reduce on nbest
+        mwer_loss = tf.math.reduce_sum(
+            [normal_nbest_pdf[k]*normal_nbest_wen[k]
+                for k in range(self.top_paths)], axis=0
+        ) # compute the sum of loss reduce on nbest
+
+        return tf.math.reduce_mean(mwer_loss) # Computes the mean of mwer loss reduce on batch
 
     def __call__(self, logit, labels, label_length, logit_length):
         """
@@ -116,4 +113,3 @@ class CTCMWERLoss():
             for k in range(self.top_paths)] # (nbest, batch_size)
 
         return self.loss(nbest_decoded, sparse_labels, nbest_log_pdf)
-
