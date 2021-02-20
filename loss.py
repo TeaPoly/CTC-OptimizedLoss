@@ -66,10 +66,10 @@ class CTCMWERLoss():
 
         # Computes log distribution.
         # log(sum(exp(elements across dimensions of a tensor)))
-        sum_nbest_log_pdf = tf.math.reduce_logsumexp(nbest_log_pdf, axis=0)
+        sum_nbest_log_pdf = tf.math.reduce_logsumexp(nbest_log_pdf, axis=0) # (batch_size)
         # Re-normalized over just the N-best hypotheses.
         normal_nbest_pdf = [
-            tf.exp(log_pdf-sum_nbest_log_pdf) for log_pdf in nbest_log_pdf]
+            tf.exp(log_pdf-sum_nbest_log_pdf) for log_pdf in nbest_log_pdf] # (nbest, batch_size)
 
         # Number of word errors, but it represents by float.
         nbest_wen = [word_error_number(tf.cast(nbest_decoded[k], dtype=tf.int32), sparse_labels)
@@ -82,10 +82,10 @@ class CTCMWERLoss():
                             mean_wen for k in range(self.top_paths)]
 
         # Expected number of word errors over the training set.
-        return tf.reduce_sum(
-            tf.reduce_mean([normal_nbest_pdf[k]*normal_nbest_wen[k])
+        return tf.math.reduce_sum(
+            tf.math.reduce_mean([normal_nbest_pdf[k]*normal_nbest_wen[k]) # Computes the mean of mwer loss reduce on batch
                 for k in range(self.top_paths)]
-        )
+        ) # Computes the sum of loss reduce on nbest
 
     def __call__(self, logit, labels, label_length, logit_length):
         """
@@ -113,7 +113,7 @@ class CTCMWERLoss():
             top_paths=self.top_paths)
         nbest_log_pdf = [
             log_probabilities[:, k]
-            for k in range(self.top_paths)]
+            for k in range(self.top_paths)] # (nbest, batch_size)
 
         return self.loss(nbest_decoded, sparse_labels, nbest_log_pdf)
 
