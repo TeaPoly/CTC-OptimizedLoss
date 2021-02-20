@@ -83,9 +83,9 @@ class CTCMWERLoss():
 
         # Expected number of word errors over the training set.
         return tf.math.reduce_sum(
-            tf.math.reduce_mean([normal_nbest_pdf[k]*normal_nbest_wen[k]) # Computes the mean of mwer loss reduce on batch
+            tf.math.reduce_mean([normal_nbest_pdf[k]*normal_nbest_wen[k])
                 for k in range(self.top_paths)]
-        ) # Computes the sum of loss reduce on nbest
+        ) # Computes the mean of mwer loss reduce on batch first, then compute the sum of loss reduce on nbest
 
     def __call__(self, logit, labels, label_length, logit_length):
         """
