@@ -1,5 +1,8 @@
-# CTC-MWER
-Computes the MWER (minimum WER) Loss with CTC beam search.
+# CTC-OptimizedLoss
+
+Some loss optimized for CTC:
+-  MWER (minimum WER) Loss with CTC beam search.
+-  Knowledge distillation for CTC loss.
 
 # Example
 ```python3
@@ -17,5 +20,5 @@ loss = mwer_loss + weight*ctc_loss
 ```
 
 # Reference
-MINIMUM WORD ERROR RATE TRAINING FOR ATTENTION-BASED SEQUENCE-TO-SEQUENCE MODELS
-https://arxiv.org/pdf/1712.01818.pdf
+- MINIMUM WORD ERROR RATE TRAINING FOR ATTENTION-BASED SEQUENCE-TO-SEQUENCE MODELS https://arxiv.org/pdf/1712.01818.pdf
+- Distilling Knowledge from Ensembles of Acoustic Models for Joint CTC-Attention End-to-End Speech Recognition. https://arxiv.org/abs/2005.09310
