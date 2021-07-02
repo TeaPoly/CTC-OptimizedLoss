@@ -3,6 +3,7 @@
 Some loss optimized for CTC:
 -  MWER (minimum WER) Loss with CTC beam search.
 -  Knowledge distillation for CTC loss.
+-  KL divergence loss for label smoothing.
 
 # Example
 ```python3
