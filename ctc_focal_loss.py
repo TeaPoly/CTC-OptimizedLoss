@@ -40,9 +40,4 @@ class CTCFocalLoss():
         focal_ctc_loss = ((self.alpha)*((1-p)**self.gamma)*(ctc_loss))
         loss = tf.reduce_mean(focal_ctc_loss)
 
-        loss = tf.cond(
-            tf.math.is_inf(loss),
-            lambda: 0,
-            lambda: loss)
-
         return loss
