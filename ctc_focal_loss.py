@@ -25,7 +25,7 @@ class CTCFocalLoss():
         self.alpha = alpha
         self.name = name
 
-    def forward(self, input, label, input_length, labels_length):
+    def __call__(self, input, label, input_length, labels_length):
         ctc_loss = tf.nn.ctc_loss_v2(
             labels,
             logits,
