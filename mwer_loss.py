@@ -82,7 +82,7 @@ class CTCMWERLoss():
                 for k in range(self.top_paths)], axis=0
         ) # compute the sum of loss reduce on nbest
 
-        return tf.math.reduce_mean(mwer_loss) # Computes the mean of mwer loss reduce on batch
+        return tf.stop_gradient(tf.math.reduce_mean(mwer_loss)) # Computes the mean of mwer loss reduce on batch
 
     def __call__(self, logit, labels, label_length, logit_length):
         """
