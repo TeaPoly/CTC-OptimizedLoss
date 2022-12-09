@@ -104,7 +104,7 @@ class CTCMWERLoss():
         #   decoded: A list of length top_paths.
         #   log_probabilities: A float matrix [batch_size, top_paths]
         #                     containing sequence log-probabilities.
-        # NOTE: CTC Beam search can be generated offline to speed up training.
+        # NOTE: `nbest_decoded` from CTC Beam search can be generated offline to speed up training.
         nbest_decoded, log_probabilities = tf.nn.ctc_beam_search_decoder(
             time_major_logit, logit_length,
             beam_width=self.beam_width,
