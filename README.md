@@ -9,9 +9,7 @@ Some loss optimized for CTC:
 
 `PyTorch`
 -  O-1: Self-training with Oracle and 1-best Hypothesis.
-$$
-\begin{aligned}\mathcal{L}_{O1}=-\log p(\mathbf{Y}_{oracle}\mid\mathbf{X})\cdot(1-\mathbf{WER}(\mathbf{Y}_{oracle},\mathbf{Y}^*))\\+\log p(\mathbf{Y}_{1-best}\mid\mathbf{X})\cdot\mathbf{WER}(\mathbf{Y}_{1-best},\mathbf{Y}^*)\end{aligned}
-$$
+-  MWER (minimum WER) Loss with CTC beam search.
 
 # Example
 ```python3
