@@ -8,9 +8,9 @@ Some loss optimized for CTC:
 -  KL divergence loss for label smoothing.
 
 `PyTorch`
--  Delay-penalized: Delay-penalized CTC implemented based on Finite State Transducer (K2 Based).
+-  Delay-penalized CTC implemented based on Finite State Transducer.
 -  O-1: Self-training with Oracle and 1-best Hypothesis.
--  MWER (minimum WER) Loss with CTC beam search (K2 Based).
+-  MWER (minimum WER) Loss with CTC beam search.
 
 # Example
 ```python3
