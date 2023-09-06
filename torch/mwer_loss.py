@@ -6,11 +6,7 @@
 
 from typing import Literal
 
-try:
-    import k2
-except ImportError:
-    raise ImportError("You should install K2 to use K2CTC")
-
+import k2
 import torch
 
 
